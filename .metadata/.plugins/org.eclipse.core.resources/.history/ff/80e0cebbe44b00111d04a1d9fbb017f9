@@ -1,0 +1,140 @@
+#define ARM_MATH_CM4
+#include "main.h"
+#include <stdio.h>
+#include "arm_math.h"
+#include "peripheral_setup.h"
+#include "variables.h"
+#include "Yin.h"
+
+Yin gitar_yin;
+
+int main(void) {
+
+	uint8_t sistem_aktif = 1;
+		uint8_t buton_eski_durum = 1;
+
+
+ 	arm_rfft_fast_init_f32(&fftHandler, FFT_BUFFER_SIZE);
+	RCC_Init();
+	GPIO_Init();
+	TIM2_Init();
+	ADC1_Init();
+	DMA2_Stream6_Init();
+	DMA2_Stream0_Init();
+	DMA2_Stream1_Init();
+	Usart_Init();
+	NVIC_Init();
+
+
+	uint8_t sistem_aktif = 1;
+	uint8_t buton_eski_durum = 1;
+
+	Yin_init(&gitar_yin, 512, 0.30f);
+	while (1) {
+		uint8_t buton_guncel_durum = (GPIOA->IDR & (1 << 2)) ? 1 : 0;
+
+
+				if (buton_eski_durum == 1 && buton_guncel_durum == 0) {
+
+					sistem_aktif = !sistem_aktif;
+					for(volatile int i = 0; i < 50000; i++);
+				}
+
+				buton_eski_durum = buton_guncel_durum;
+
+		if (sistem_aktif) {
+					if (veridoldu == 2) {
+						Process_Buffer();
+						veridoldu = 0;
+					}
+				} else {
+					veridoldu = 0;
+				}
+
+	}
+}
+
+void Process_Buffer() {
+
+	for (int n = 0; n < FFT_BUFFER_SIZE; n++) {
+		fftbuffin[n] = ((float32_t) adc_buffer[n] - 2048.0f)	;
+	}
+
+	float raw = Yin_getPitch(&gitar_yin, fftbuffin);
+	pitch_history[pitch_idx++ % MEDIAN_SIZE] = raw;
+
+	// Basit medyan için sırala
+	float sorted[MEDIAN_SIZE];
+	memcpy(sorted, pitch_history, sizeof(sorted));
+	// bubble sort (küçük N için yeterli)
+	for (int i = 0; i < MEDIAN_SIZE-1; i++)
+	    for (int j = 0; j < MEDIAN_SIZE-1-i; j++)
+	        if (sorted[j] > sorted[j+1]) {
+	            float tmp = sorted[j]; sorted[j] = sorted[j+1]; sorted[j+1] = tmp;
+	        }
+
+	maks_hz = sorted[MEDIAN_SIZE / 2]; // ortanca değer
+	    tx_buffer[0] = 0xAA;
+	    memcpy(&tx_buffer[1], &maks_hz, 4);
+	    DMA2_Stream6->CR &= ~(1 << 0);
+	    while(DMA2_Stream6->CR & (1 << 0));
+	    //FLAG Clean
+	    DMA2->HIFCR |= (1 << 21) | (1 << 19) | (1 << 18) | (1 << 16);
+
+	    DMA2_Stream6->M0AR = (uint32_t)tx_buffer;
+	    DMA2_Stream6->NDTR = 5;
+	    DMA2_Stream6->CR |= (1 << 0);
+
+}
+
+void DMA2_Stream0_IRQHandler(void) {
+	//When half of buffer fill flag set 1;
+	if (DMA2->LISR & (1 << 4)) {
+		DMA2->LIFCR = (1 << 4);
+		veridoldu = 1;
+
+	}
+	if (DMA2->LISR & (1 << 5)) {
+		DMA2->LIFCR = (1 << 5);
+		veridoldu = 2;
+	}
+}
+
+
+
+void FFT(){
+	//	arm_rfft_fast_f32(&fftHandler, fftbuffin, fftbufout, fftflag);
+	//
+	//	arm_cmplx_mag_f32(fftbufout, mag_buffer, 1024);
+	//	arm_max_f32(&mag_buffer[1], 1023, &maks_genlik, &maks_indeks);
+	//
+	//	maks_indeks += 1;
+	//
+	//	uint32_t temel_indeks = maks_indeks / 2;
+	//	if(temel_indeks > 10)
+	//	{
+	//		float aday_genlik = mag_buffer[temel_indeks];
+	//
+	//		if(aday_genlik > maks_genlik * 0.10)
+	//		{
+	//			maks_indeks = temel_indeks;
+	//		}
+	//	}
+	//
+	//		//Parabolic Interpolation
+	//		//y1 Left side , y2 Peak , y3 Right side
+	//		//d = 0.5f* y1 - y3 / y1-2*y2+y3
+	//		float y1 = mag_buffer[maks_indeks - 1];
+	//	    float y2 = mag_buffer[maks_indeks];
+	//	    float y3 = mag_buffer[maks_indeks + 1];
+	//	    float denominator = y1-2*y2+y3;
+	//
+	//	    float d = 0;
+	//	    if (denominator != 0) {
+	//	            d = 0.5f * (y1 - y3) / denominator;
+	//	        }
+	//	    float32_t hassas = (float32_t)maks_indeks + d;
+	//	    maks_hz = hassas * 10000.0f / 2048.0f;
+
+
+}

@@ -28,6 +28,10 @@ public:
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
+    void resetUI();
+    void updateSliderColor(const QString& color);
+    QString m_lastSliderColor;
+    float m_smoothedFreq = 0.0f;
 
 };
 #endif // MAINWINDOW_H

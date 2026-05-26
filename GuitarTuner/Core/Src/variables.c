@@ -1,0 +1,26 @@
+/*
+ * variables.c
+ *
+ *  Created on: Apr 17, 2026
+ *      Author: serhatt
+ */
+
+#include "variables.h"
+
+uint16_t adc_buffer[2048];
+uint8_t  tx_buffer[5];
+float32_t hanning_window[FFT_BUFFER_SIZE];
+
+float pitch_history[MEDIAN_SIZE] = {0};
+int pitch_idx = 0;
+float    fftbuffin[FFT_BUFFER_SIZE];
+float    fftbufout[FFT_BUFFER_SIZE];
+float    mag_buffer[FFT_BUFFER_SIZE / 2];
+float32_t maks_hz     = 0;
+float32_t maks_genlik = 0;
+uint32_t  maks_indeks = 0;
+uint32_t  freq_buffer = 0;
+arm_rfft_fast_instance_f32 fftHandler;
+uint8_t   fftflag   = 0;
+uint8_t system_is_open = 0;
+volatile uint8_t   veridoldu = 0;

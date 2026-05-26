@@ -1,0 +1,58 @@
+23:22:01 **** Incremental Build of configuration Debug for project GuitarTuner ****
+make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O2 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:16:9: warning: implicit declaration of function 'RCC_Init' [-Wimplicit-function-declaration]
+   16 |         RCC_Init();
+      |         ^~~~~~~~
+../Core/Src/main.c:17:9: warning: implicit declaration of function 'GPIO_Init' [-Wimplicit-function-declaration]
+   17 |         GPIO_Init();
+      |         ^~~~~~~~~
+../Core/Src/main.c:18:9: warning: implicit declaration of function 'TIM2_Init' [-Wimplicit-function-declaration]
+   18 |         TIM2_Init();
+      |         ^~~~~~~~~
+../Core/Src/main.c:19:9: warning: implicit declaration of function 'ADC1_Init' [-Wimplicit-function-declaration]
+   19 |         ADC1_Init();
+      |         ^~~~~~~~~
+../Core/Src/main.c:20:9: warning: implicit declaration of function 'DMA2_Stream6_Init'; did you mean 'DMA2_Stream6_BASE'? [-Wimplicit-function-declaration]
+   20 |         DMA2_Stream6_Init();
+      |         ^~~~~~~~~~~~~~~~~
+      |         DMA2_Stream6_BASE
+../Core/Src/main.c:21:9: warning: implicit declaration of function 'DMA2_Stream0_Init'; did you mean 'DMA2_Stream0_BASE'? [-Wimplicit-function-declaration]
+   21 |         DMA2_Stream0_Init();
+      |         ^~~~~~~~~~~~~~~~~
+      |         DMA2_Stream0_BASE
+../Core/Src/main.c:22:9: warning: implicit declaration of function 'DMA2_Stream1_Init'; did you mean 'DMA2_Stream1_BASE'? [-Wimplicit-function-declaration]
+   22 |         DMA2_Stream1_Init();
+      |         ^~~~~~~~~~~~~~~~~
+      |         DMA2_Stream1_BASE
+../Core/Src/main.c:23:9: warning: implicit declaration of function 'Usart_Init' [-Wimplicit-function-declaration]
+   23 |         Usart_Init();
+      |         ^~~~~~~~~~
+../Core/Src/main.c:24:9: warning: implicit declaration of function 'NVIC_Init' [-Wimplicit-function-declaration]
+   24 |         NVIC_Init();
+      |         ^~~~~~~~~
+../Core/Src/main.c:45:49: warning: implicit declaration of function 'Process_Buffer' [-Wimplicit-function-declaration]
+   45 |                                                 Process_Buffer();
+      |                                                 ^~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:55:6: warning: conflicting types for 'Process_Buffer'; have 'void()'
+   55 | void Process_Buffer() {
+      |      ^~~~~~~~~~~~~~
+../Core/Src/main.c:45:49: note: previous implicit declaration of 'Process_Buffer' with type 'void()'
+   45 |                                                 Process_Buffer();
+      |                                                 ^~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "GuitarTuner.elf" @"objects.list"  -larm_cortexM4lf_math -mcpu=cortex-m4 -T"/home/serhatt/guitar-tuner/GuitarTuner/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GuitarTuner.map" -Wl,--gc-sections -static -L"/home/serhatt/guitar-tuner/GuitarTuner/Lib" -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: GuitarTuner.elf
+ 
+arm-none-eabi-size  GuitarTuner.elf 
+arm-none-eabi-objdump -h -S GuitarTuner.elf  > "GuitarTuner.list"
+   text	   data	    bss	    dec	    hex	filename
+  95924	    460	  22460	 118844	  1d03c	GuitarTuner.elf
+Finished building: default.size.stdout
+ 
+Finished building: GuitarTuner.list
+ 
+
+23:22:02 Build Finished. 0 errors, 11 warnings. (took 789ms)
+

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Gauger.qml</file>
+    </qresource>
+</RCC>

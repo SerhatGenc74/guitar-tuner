@@ -11,6 +11,7 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/Rcc/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -60,8 +61,8 @@ all: main-build
 main-build: GuitarTuner.elf secondary-outputs
 
 # Tool invocations
-GuitarTuner.elf GuitarTuner.map: $(OBJS) $(USER_OBJS) /home/serhatt/Tuner/GuitarTuner/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "GuitarTuner.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/serhatt/Tuner/GuitarTuner/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GuitarTuner.map" -Wl,--gc-sections -static -L"/home/serhatt/Tuner/GuitarTuner/Lib" -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+GuitarTuner.elf GuitarTuner.map: $(OBJS) $(USER_OBJS) /home/serhatt/guitar-tuner/GuitarTuner/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "GuitarTuner.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/serhatt/guitar-tuner/GuitarTuner/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GuitarTuner.map" -Wl,--gc-sections -static -L"/home/serhatt/guitar-tuner/GuitarTuner/Lib" -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

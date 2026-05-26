@@ -1,0 +1,9 @@
+../Core/Src/Rcc/peripheral_setup.c:9:10:RCC_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:29:10:GPIO_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:39:10:TIM2_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:54:10:ADC1_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:68:10:DMA2_Stream6_Init	8	static
+../Core/Src/Rcc/peripheral_setup.c:97:10:DMA2_Stream0_Init	4	static
+../Core/Src/Rcc/peripheral_setup.c:134:10:DMA2_Stream1_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:151:10:Usart_Init	0	static
+../Core/Src/Rcc/peripheral_setup.c:161:10:NVIC_Init	0	static,ignoring_inline_asm
